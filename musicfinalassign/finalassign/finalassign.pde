@@ -1,18 +1,28 @@
-
 Img img;
-Dessert dessert;
-Dessert dessert1;
-Dessert dessert2;
+ESign eSign1;
+ESign eSign2;
+ESign eSign3;
+ESign eSign4;
+ESign eSign5;
+ESign eSign6;
+ESign eSign7;
+
 int childrenX = 20;
 int childrenY = 435;
-int dessertSize =100;
-int dessert1X = 240;
-int dessert1Y = 100;
+int eSignX = 240;
+int eSignY = 100;
+int eSign;
+int eSignUp;
+int eSignDown;
+int eSignRight;
+int eSignLeft;
 int childrenXsize=250;
 int childrenYsize=250;
 int life ;
 int cakenum;
-int point =0;
+int score =0;
+
+int i=0;
  import ddf.minim.*;
 Minim minim;
 AudioPlayer song;
@@ -21,112 +31,324 @@ AudioPlayer alarm;
   
 
 //Game state
-int game_state ;
-final int GAME_INITIAL = 1;
-final int GAME_RUN     = 2;
-final int GAME_LOSE    = 3;
-final int GAME_FAIL    = 4;
+int status ;
+final int GAME_INITIAL    = 1;
+final int Level1_start    = 2;
+final int Level1_play     = 3;
+final int Level2_start    = 4;
+final int Level2_play     = 5;
+final int Level3_start    = 6;
+final int Level3_play     = 7;
+final int GAME_LOSE       = 8;
+final int GAME_WIN        = 9;
+final int Level1_pause    = 10;
+final int Level2_pause    = 11;
+final int Level3_pause    = 12;
+
 
 void setup(){
   size (600,640);
   life = 3 ; 
   img = new Img();
-  dessert1 = new Dessert(dessert1X,dessert1Y,2,4,2);
-  game_state = 1;
-  
-    minim = new Minim(this);
-  song = minim.loadFile("music.mp3");
-  alarm = minim.loadFile("alarmring.mp3");
+  eSign1 = new ESign(200,eSignY,2,4,2,200);
+  eSign2 = new ESign(220,eSignY,2,5,2,150);
+  eSign3 = new ESign(240,eSignY,2,6,2,100);
+  eSign4 = new ESign(260,eSignY,2,6,2,80);
+  eSign5 = new ESign(265,eSignY,2,7,2,60);
+  eSign6 = new ESign(270,eSignY,2,7,2,40);
+  eSign7 = new ESign(290,eSignY,2,8,2,20);
+  status = 1;
+  reset();
 }
 
 void draw(){
-  switch(game_state){
+  noStroke();
+
+
+  switch(status){
+    
    case GAME_INITIAL:
    img.startshow();  
-    song.play();
+   break;
+   
+   case Level1_start:
+   img.rules();
+  //img.level1_startpic1_show();
    break;
       
-   case GAME_RUN:
+   case Level1_play:
    img.show();
-   dessert1.show(img);
-  dessert1.move(); 
-
+   changeSize1();
+   
+   checkLose();  
    displaylife();
    drawScore();
-   println(point);
-   // boy hitTest
-        // if (dessertX+50>childrenX && childrenX > dessertX && dessertY <  childrenY && childrenY < dessertY + 50){
-        //  image(img.boycry, childrenX, childrenY);
-        //  life--;
-        // }
-   
+   change();
+ 
+   println(score);
    break;
    
-   /*case GAME_FAIL:
-   img.boycry();
-    life--;
-    delay(300);
-    break;
-   */
+   case Level2_start:
+   img.change();
+  //img.level1_startpic1_show();
+   break;
+   
+   case Level2_play:
+   img.show();
+   changeSize2();
+   checkLose();
+   displaylife();
+   drawScore();
+   change();
+   println(score);
+   break;
+   
+   case Level3_start:
+   img.change();
+  //img.level1_startpic1_show();
+   break;
+   
+   case Level3_play:
+   img.show();
+   changeSize3();
+   checkLose();
+   displaylife();
+   drawScore();
+   change();
+   println(score);
+   break;
+   
    case GAME_LOSE :
    img.endshow();
-   finalScore();
-   alarm.play();
+   finalScore(); 
    break;
   
-}
+  }
 }
 
+void changeSize1(){
+  if(i<4){
+      eSign1.show(img);
+       eSign1.move(); 
+  }
+  if(i>=4&&i<8){
+      eSign2.show(img);
+      eSign2.move(); 
+    }
+ 
+ if(i>=8 && i<12){
+      eSign3.show(img);
+      eSign3.move(); 
+      
+    }    
+ 
+ if(i>=12 && i<16){
+      eSign4.show(img);
+      eSign4.move(); 
+    }
+  
+}
 
+void changeSize2(){
+  if(i>=16 && i<20){
+      eSign2.show(img);
+       eSign2.move(); 
+  }
+  if(i>=20 && i<24){
+      eSign3.show(img);
+       eSign3.move(); 
+  }
+ 
+  if(i>=24 && i<28){
+      eSign4.show(img);
+       eSign4.move(); 
+  }
+  if(i>=28 && i<32){
+      eSign5.show(img);
+       eSign5.move(); 
+  }
+  if(i>=32 && i<36){
+      eSign6.show(img);
+      eSign6.move();     
+  }
+}
+
+void changeSize3(){
+  if(i>=36 && i<40){
+      eSign3.show(img);
+      eSign3.move(); 
+  }
+  if(i>=40 && i<44){
+      eSign4.show(img);
+      eSign4.move(); 
+  }
+ 
+  if(i>=44 && i<48){
+      eSign5.show(img);
+      eSign5.move(); 
+  }
+  if(i>=48 && i<52){
+      eSign6.show(img);
+      eSign6.move(); 
+  }
+  if(i>=52 && i<56){
+      eSign7.show(img);
+      eSign7.move(); 
+  }
+}
 
 void displaylife(){
    int []lifeArr = new int[3];
    for (int n = 0; n < life ; n++ ) {  
    image(img.heart,400+50*n,60);
-   lifeArr[n] = n;
-   
+   lifeArr[n] = n;   
    }
 }
+
+void change() {
+  if(status == Level1_play && score == 160) {
+    status = Level2_start;
+  }
+  if(status == Level2_play && score == 200) {
+    status = Level3_start; 
+  }
+  if(status == Level3_play && score == 200) {
+    status = GAME_WIN;
+  }
+}
+
+void checkLose() {  
+  if(status == Level1_play||status == Level2_play||status == Level3_play){
+   if(key != UP && eSign == eSignUp) {
+     life--;
+   }
+   if(key != DOWN && eSign == eSignDown) {
+     life--;
+   }
+   if(key != RIGHT && eSign == eSignRight) {
+     life--;
+   }
+   if(key != LEFT && eSign == eSignRight) {
+     life--;
+   }
+   if (life==0){
+       status = GAME_LOSE;
+   }
+}
+}
+
 
 void drawScore() {
   noStroke();
   fill(104,37,138);
   textAlign(CENTER, CENTER);
   textSize(23);
-  text("SCORE:"+point, 100, 70);
+  text("SCORE:"+score, 100, 70);
 }
 void finalScore(){
   noStroke();
   fill(255,241,0);
   textAlign(CENTER,CENTER);
   textSize(50);
-  text(point,310,160);
+  text(score,310,160);
 }
 
-  void reset(){
+void reset(){
    displaylife();
    life=3;
-   point = 0;
+   score = 0;
    drawScore(); 
-   dessert1.speed = 4;
-   dessert1.y=100;
-game_state = GAME_INITIAL ;
-  } 
-
+   eSign1.speed = 4;
+   eSign1.y=100;
+   //status = GAME_INITIAL ;
+} 
 
 void keyPressed() {
-  if(key == ENTER &&  (game_state == GAME_INITIAL)){
-    game_state = GAME_RUN ;
-  }
+  if (status == Level1_play||status == Level2_play||status == Level3_play) {
+   if (key == CODED ) {
+      switch(keyCode){
+        case UP:
+              if(eSign == eSignUp){
+                 score+=10;
+                 i=i+1;
+               }
+               break;
+        case DOWN:
+              if(eSign == eSignDown){
+                 score+=10;
+                  i=i+1;
+               } 
+               break;
+        case LEFT:
+               if(eSign == eSignLeft){
+                 score+=10;
+                  i=i+1;
+               } 
+               break;
+        case RIGHT:
+               if(eSign == eSignRight){
+                 score+=10;
+                  i=i+1;
+               }
+               break;
+    }
+   }
+}
+   if (key == ENTER) {
+    switch(status) {
+
+    case GAME_INITIAL:
+      status = Level1_start;
+     break;
+    
+    case Level1_start:
+     status = Level1_play;
+     break;
+   
+    case Level1_play:
+     status = Level1_pause  ;
+     break;
+   
+     case Level1_pause:
+     status = Level1_play;
+     break;
+     
+     case Level2_start:
+     status = Level2_play;
+     reset();
+     break;
+   
+    case Level2_play:
+     status = Level2_pause  ;
+     break;
+   
+     case Level2_pause:
+     status = Level2_play;
+     break;
+     
+     case Level3_start:
+     status = Level3_play;
+     reset();
+     break;
+   
+    case Level3_play:
+     status = Level3_pause  ;
+     break;
+   
+     case Level3_pause:
+     status = Level3_play;
+     break;
   
-  if(key == ENTER &&  (game_state == GAME_LOSE)){
-    game_state = GAME_INITIAL ;
-    reset();
-  }
-  if(key == 'x' && (game_state == GAME_RUN)){
-    img.ggirleat();
-  if((dessert1.y)>=(390) && (dessert1.y) <= (640) ){
-   point+=10*(int)(1+dessert1.speed*0.5);
-   dessert1.y=100;}
+ 
+    case GAME_WIN:
+      status = GAME_INITIAL;
+      reset();
+      break;
+
+    case GAME_LOSE:
+      status = GAME_INITIAL;
+      reset();
+      break;
+    }
   }
 }
